@@ -44,12 +44,12 @@ def run(options): ## allows the tool to be run from another python file by passi
     #print str(options)
     if options == []:
         print parser.print_help()
-        sys.exit(-1)
+        return -1
 
     if not options.config or options.config == "":
         print ("You must specify a config file. Please, use -c or --config option")
         print parser.print_help()
-        sys.exit(-1)
+        return -1
 
     try:
         f = open(options.config)
@@ -57,7 +57,7 @@ def run(options): ## allows the tool to be run from another python file by passi
         f.close()
     except:
         print "Error. Config file not found. Exiting now."
-        sys.exit(-15)
+        return -15
 
     overrideOption(confmap["runmode_options"], options.__dict__,"globallogdir")
     logLevel=''
@@ -95,7 +95,7 @@ def run(options): ## allows the tool to be run from another python file by passi
     if options.list_engines == True:
         p_info("The following engines are available: %s" % engines_available)
         print IDSTool.EngineMgr
-        sys.exit(0)
+        return 0
 
     if not options.runmode or options.runmode not in runmodes_available.split(','):
         print "Runmode not available or missing, runmodes available %s" % runmodes_available
@@ -116,7 +116,7 @@ def run(options): ## allows the tool to be run from another python file by passi
                         print e
                     p_error(" To view more details of them, please, use the option -L")
                     print parser.print_help()
-                    sys.exit(-3)
+                    return -3
                 else:
                     IDSTool.targets.append(target)
 
@@ -149,7 +149,7 @@ def run(options): ## allows the tool to be run from another python file by passi
     runstop = time.time() - runstart
 
     p_info("Total time for the idstool %s" % runstop)
-    sys.exit(0)
+    return 0
 
 if __name__ == "__main__":
     parser = OptionParser()
@@ -277,7 +277,7 @@ if __name__ == "__main__":
     # Parsed config
     (options, args) = parser.parse_args()
 
-    run(options)
+    sys.exit(run(options))
 
 
 '''
